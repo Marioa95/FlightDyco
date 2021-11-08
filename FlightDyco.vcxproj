@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\aircraft_functions.cpp" />
+    <ClCompile Include="src\environment_def.cpp" />
     <ClCompile Include="src\execution.cpp" />
     <ClCompile Include="src\sat_functions.cpp" />
     <ClCompile Include="src\Utilities\kinematics_functions.cpp" />

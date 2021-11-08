@@ -6,9 +6,6 @@
 // 
 //
 
-//TRANSLATIONAL EQUATIONS OF MOTION
-
-
 //ROTATIONAL EQUATIONS OF MOTION
 void Aircraft::moments() {
 
@@ -28,7 +25,11 @@ Matrixop Aircraft::dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI) {
 }
 
 //Calculates the angular velocity in body frame by integrating angular acceleration
-void Aircraft::omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, double tf) {
+void Aircraft::omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo) {
+	double h, tf;
+
+	h = get_stepsize();
+	tf = get_simtime();
 
 	int N;
 	N = tf / h;
@@ -67,9 +68,22 @@ void Aircraft::omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, doubl
 	cout << w.norm();
 }
 
+//TRANSLATIONAL EQUATIONS OF MOTION
+void Aircraft::forces() {
+
+
+}
+
+
 //FRAMES AND COORDINATE SYSTEMS
 // ECI (Earth-centered inertial) Nonrotating inertial frame fixed at Earth c.m.
 // ECEF(Earth-centered, Earth fixed) Rotating frame defined by rigid Earth at c.m.
 // Fv Frame translating with vehicle's c.m.
 // Fb Body frame defined by rigid vehicle
 //
+
+void Aircraft::eci2ecef(Matrixop Aeci,double mu) {
+	
+	euler3(mu);
+
+}

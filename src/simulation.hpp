@@ -7,18 +7,36 @@ class Simulation {
 	double step_size;
 	int nvehicles;
 
+	//Define flat earth or round earth with a member e.g.
+	// String Earth
+	// 	   Earth = "Flat"
+	// 	Environment class:
+	// 	   if Earth = "Flat"
+	// 	   then g = constant
+	// 	   else if Earth = "Round"
+	// 	   then g different and add coriolis term in Dynamics
+	//
+	// 	   Build state vector for each vehicle as
+	// 	   state[]
+	//
+
+
 
 public:
 
+	double get_simtime() { return sim_time; }
+	double get_stepsize() { return step_size; }
+	double set_simtime(double t) { sim_time = t; }
+	double set_step_size(double h) { step_size = h; }
 
 };
 
-class Environment {
+class Environment :public Simulation {
 public:
 	
 };
 
-class Vehicle :public Simulation {
+class Vehicle :public Environment {
 
 
 protected:
@@ -26,7 +44,7 @@ protected:
 	double* state;
 	Matrixop I;
 	Matrixop dI;
-	Matrixop M;
+	Matrixop M,F;
 
 public:
 
@@ -59,10 +77,17 @@ public:
 	//Constructors
 
 	//Functions
+	//TRANSLATIONAL EQUATIONS OF MOTION
+	void forces();
 
-	void forces() {};
+	//ROTATIONAL EQUATIONS OF MOTION
+	
 	void moments();
 	Matrixop dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI);
-	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, double tf);
+	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo);
+
+	//FRAMES AND COORDINATE SYSTEMS
+
+	void eci2ecef(Matrixop Aeci,double mu);
 
 };

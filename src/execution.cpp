@@ -9,7 +9,7 @@ int main()
 
 	Matrixop I(3, 3), dI(3, 3), wo(3, 1), x(7, 1), Mo(3, 1), qo(4, 1), euler(3, 1);
 	Satellite s1;
-
+	Aircraft a1;
 
 	double h,tf;
 	h = 0.001;
