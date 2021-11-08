@@ -52,3 +52,19 @@ public:
 	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, double tf);
 
 };
+
+class Aircraft : public Vehicle {
+
+public:
+
+	//Constructors
+
+	//Functions
+
+	void forces() {};
+	void moments();
+	void def_massproperties(Matrixop Inertia, Matrixop dInertia);
+	Matrixop dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI);
+	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, double tf);
+
+};
