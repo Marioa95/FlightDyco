@@ -7,6 +7,7 @@
 // 
 //
 
+//Extract mass properties from file
 void Aircraft::def_massproperties(Matrixop Inertia, Matrixop dInertia) {
 
 	I = Inertia;

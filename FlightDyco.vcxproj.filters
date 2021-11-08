@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp">
+    <ClCompile Include="src\execution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\sat_functions.cpp">
@@ -33,7 +33,7 @@
     <ClCompile Include="src\Utilities\numerical_methods.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="aircraft_functions.cpp">
+    <ClCompile Include="src\aircraft_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

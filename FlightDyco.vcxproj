@@ -139,8 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="aircraft_functions.cpp" />
-    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\aircraft_functions.cpp" />
+    <ClCompile Include="src\execution.cpp" />
     <ClCompile Include="src\sat_functions.cpp" />
     <ClCompile Include="src\Utilities\kinematics_functions.cpp" />
     <ClCompile Include="src\Utilities\matrixop_functions.cpp" />
