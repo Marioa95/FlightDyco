@@ -1,13 +1,15 @@
 #include "simulation.hpp"
 
 //This file contains the functions to calculate the dynamics of a Aircraft
-// def_massproperties()
 // forces()
 // moments()
 // 
 //
 
+//TRANSLATIONAL EQUATIONS OF MOTION
 
+
+//ROTATIONAL EQUATIONS OF MOTION
 void Aircraft::moments() {
 
 	Matrixop Moments(3, 1);
@@ -64,3 +66,10 @@ void Aircraft::omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, doubl
 	writefile(x);
 	cout << w.norm();
 }
+
+//FRAMES AND COORDINATE SYSTEMS
+// ECI (Earth-centered inertial) Nonrotating inertial frame fixed at Earth c.m.
+// ECEF(Earth-centered, Earth fixed) Rotating frame defined by rigid Earth at c.m.
+// Fv Frame translating with vehicle's c.m.
+// Fb Body frame defined by rigid vehicle
+//
