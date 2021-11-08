@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="aircraft_functions.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\sat_functions.cpp" />
     <ClCompile Include="src\Utilities\kinematics_functions.cpp" />
