@@ -3,7 +3,7 @@
 
 class Simulation {
 
-	double time;
+	double sim_time;
 	double step_size;
 	int nvehicles;
 
@@ -13,12 +13,12 @@ public:
 
 };
 
-class Environment:public Simulation {
+class Environment {
 public:
 	
 };
 
-class Vehicle :public Environment {
+class Vehicle :public Simulation {
 
 
 protected:
@@ -33,7 +33,7 @@ public:
 
 	virtual void moments() = 0;
 	virtual void forces() = 0;
-	virtual void def_massproperties(Matrixop Inertia,Matrixop DInertia) = 0;
+	void def_massproperties(Matrixop Inertia,Matrixop DInertia);
 	
 };
 
@@ -47,7 +47,6 @@ public:
 
 	void forces() {};
 	void moments();
-	void def_massproperties(Matrixop Inertia, Matrixop dInertia);
 	Matrixop dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI);
 	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, double tf);
 
@@ -63,7 +62,6 @@ public:
 
 	void forces() {};
 	void moments();
-	void def_massproperties(Matrixop Inertia, Matrixop dInertia);
 	Matrixop dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI);
 	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo, double h, double tf);
 

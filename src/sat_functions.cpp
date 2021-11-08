@@ -7,11 +7,6 @@
 // 
 //
 
-void Satellite::def_massproperties(Matrixop Inertia, Matrixop dInertia) {
-
-	I = Inertia;
-	dI = dInertia;
-}
 
 void Satellite::moments() {
 
