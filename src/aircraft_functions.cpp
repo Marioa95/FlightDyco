@@ -26,14 +26,10 @@ Matrixop Aircraft::dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI) {
 
 //Calculates the angular velocity in body frame by integrating angular acceleration
 void Aircraft::omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo) {
-	double h, tf;
-
-	h = get_stepsize();
-	tf = get_simtime();
-
+	
 	int N;
-	N = tf / h;
-	Matrixop w(3, 1), dw(3, 1), q(4, 1), dq(4, 1), x(N, 3), euler(3, 1);
+	N = get_simtime() / get_stepsize();
+	Matrixop w(3, 1), dw(3, 1), q(4, 1), dq(4, 1), euler(3, 1);
 
 	w = wo;
 	q = qo;
@@ -42,30 +38,19 @@ void Aircraft::omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo) {
 
 	for (int i = 1; i < N; i++) {
 		dw = dwdt(I, M, w, dI);
-		w = eulint(dw, w, h);
+		w = eulint(dw, w, get_stepsize());
 		moments();
 		dq = dqdt(q, w);
-		q = eulint(dq, q, h);
+		q = eulint(dq, q, get_stepsize());
 		q = normalize(q);
 		euler = q2euler(q) * (180 / pi);
-		//euler.display();
 
-
-		//x.assign_val(i, 1, w.get_ele(0));
-		//x.assign_val(i, 2, w.get_ele(1));
-		//x.assign_val(i, 3, w.get_ele(2));
-		/*x.assign_val(i, 1, q.get_ele(0));
-		x.assign_val(i, 2, q.get_ele(1));
-		x.assign_val(i, 3, q.get_ele(2));
-		x.assign_val(i, 4, q.get_ele(3));*/
-		x.assign_val(i, 1, euler.get_ele(0));
-		x.assign_val(i, 2, euler.get_ele(1));
-		x.assign_val(i, 3, euler.get_ele(2));
-
+		omega_b = w;
+		attitude_eul = euler;
+		attitude_q = q;
+	
 	}
 
-	writefile(x);
-	cout << w.norm();
 }
 
 //TRANSLATIONAL EQUATIONS OF MOTION
@@ -74,6 +59,28 @@ void Aircraft::forces() {
 
 }
 
+Matrixop Aircraft::dvdt(double mass, Matrixop F, Matrixop v) {
+
+	//Do switch cases for round and flat earth equations
+	return F*(1/mass) - cross(omega_b + omega_e(),v);
+
+}
+void Aircraft::vbody(Matrixop vo, Matrixop po, Matrixop Fo) {
+
+	int N;
+	N = get_simtime() / get_stepsize();
+	Matrixop v(3, 1), dv(3, 1), p(4, 1), dp(4, 1);
+
+	v = vo;
+	p = po;
+	F = Fo;
+
+	for (int i = 1; i < N; i++) {
+		dv = dvdt(mass, F, v);
+		v = eulint(dv, v, get_stepsize());
+		forces();
+	}
+}
 
 //FRAMES AND COORDINATE SYSTEMS
 // ECI (Earth-centered inertial) Nonrotating inertial frame fixed at Earth c.m.

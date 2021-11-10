@@ -15,6 +15,9 @@ int main()
 	h = 0.001;
 	tf = 20;
 
+	a1.set_simtime(tf);
+	a1.set_step_size(h);
+
 	Mo.assign_val(2,1,0);
 
 	I = eye(3);
@@ -22,7 +25,7 @@ int main()
 	I.assign_val(2, 2, 3);
 	I.assign_val(3, 3, 1);
 	
-	s1.def_massproperties(I,dI);
+	a1.def_massproperties(I,dI);
 
 	//wo.random();
 	wo.assign_val(1, 1, 0);
@@ -37,7 +40,7 @@ int main()
 
 	cout << wo.norm() << endl;
 
-	s1.omega_calc(wo,qo,Mo,h,tf);
+	a1.omega_calc(wo, qo, Mo);//,h,tf);
 	
 	
 }
