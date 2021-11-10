@@ -89,8 +89,3 @@ void Aircraft::vbody(Matrixop vo, Matrixop po, Matrixop Fo) {
 // Fb Body frame defined by rigid vehicle
 //
 
-void Aircraft::eci2ecef(Matrixop Aeci,double mu) {
-	
-	euler3(mu);
-
-}

@@ -1,11 +1,13 @@
 #pragma once
 #include "Utilities/utilities.h"
+#include <string.h>
 
 class Simulation {
 
 	double sim_time;
 	double step_size;
 	int nvehicles;
+	string earth_model;
 
 	//Define flat earth or round earth with a member e.g.
 	// String Earth
@@ -26,6 +28,7 @@ public:
 
 	double get_simtime() { return sim_time; }
 	double get_stepsize() { return step_size; }
+	string get_earthmodel() { return earth_model; }
 	void set_simtime(double t) { sim_time = t; }
 	void set_step_size(double h) { step_size = h; }
 
@@ -42,7 +45,7 @@ public:
 
 	Matrixop omega_e();
 	//GRAVITY
-
+	Matrixop gravity(Matrixop position);
 
 	//ATMOSPHERE
 
@@ -66,7 +69,12 @@ public:
 	virtual void moments() = 0;
 	virtual void forces() = 0;
 	void def_massproperties(Matrixop Inertia,Matrixop DInertia);
-	
+
+	//FRAMES AND COORDINATE SYSTEMS
+	Matrixop eci2ecef(double mu);
+	Matrixop ecef2b(double yaw, double pitch, double roll);
+	Matrixop ecef2NED(double lat,double lon);
+
 };
 
 class Satellite : public Vehicle {
@@ -101,9 +109,6 @@ public:
 	Matrixop dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI);
 	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo);
 
-	//FRAMES AND COORDINATE SYSTEMS
-
-	void eci2ecef(Matrixop Aeci,double mu);
 
 	//TRANSLATIONAL EQUATIONS OF MOTION
 	

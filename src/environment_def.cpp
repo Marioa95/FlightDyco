@@ -9,6 +9,12 @@ Matrixop Environment::omega_e() {
 }
 
 //GRAVITY
+Matrixop Environment::gravity(Matrixop position) {
+	Matrixop G(3, 1);
+	double J2 = 1.0826267e-3;
+	double a = 6378137;
 
+
+}
 
 //ATMOSPHERE

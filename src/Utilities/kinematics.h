@@ -55,5 +55,6 @@ Matrixop q2dcm(Matrixop q);
 Matrixop euler1(double theta);
 Matrixop euler2(double theta);
 Matrixop euler3(double theta);
+Matrixop euler321(double psi,double theta,double phi);
 Matrixop dcm2euler(Matrixop dcm);
 Matrixop q2euler(Matrixop q);

@@ -147,6 +147,16 @@ Matrixop euler3(double theta) {
 
 	return euler;
 }
+Matrixop euler321(double psi, double theta, double phi) {
+	Matrixop yaw(3, 3), pitch(3, 3), roll(3, 3);
+
+	yaw = euler3(psi);
+	pitch = euler2(theta);
+	roll = euler1(phi);
+
+	return roll * pitch * yaw;
+
+}
 Matrixop dcm2euler(Matrixop dcm) {
 	Matrixop euler(3, 1);
 

@@ -13,3 +13,25 @@ void Vehicle::def_massproperties(Matrixop Inertia, Matrixop dInertia) {
 // Fv Frame translating with vehicle's c.m.
 // Fb Body frame defined by rigid vehicle
 //
+
+Matrixop Vehicle::eci2ecef(double mu) {
+
+	return euler3(mu);
+}
+
+Matrixop ecef2b(double yaw, double pitch, double roll) {
+	
+	return euler321(yaw, pitch, roll);
+
+}
+
+Matrixop Vehicle::ecef2NED(double lat, double lon) {
+
+	Matrixop middle(3, 3);
+
+	middle.assign_val(1, 3, 1);
+	middle.assign_val(2, 2, 1);
+	middle.assign_val(3, 1, -1);
+
+	return euler3(lon) * middle * (euler3(lat).trans());
+}
