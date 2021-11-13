@@ -59,10 +59,12 @@ void Aircraft::forces() {
 
 }
 
+//Calculates body acceleration wrt earth in body reference frame
 Matrixop Aircraft::dvdt(double mass, Matrixop F, Matrixop v) {
 
 	//Do switch cases for round and flat earth equations
-	return F*(1/mass) - cross(omega_b + omega_e(),v);
+	//(1/m)Tvb*F + Tgb*G - (w_b/e + 2*w_e/i)*V_b/e - w_e/i*w_e/i*r_b/i
+	return (v2b(alpha, beta) * F) * (1 / mass) + ned2b(latitude, longitude) * gravity(position) - cross(omega_b + omega_e() * 2, v) - cross(omega_e(), cross(omega_e(), position));
 
 }
 void Aircraft::vbody(Matrixop vo, Matrixop po, Matrixop Fo) {

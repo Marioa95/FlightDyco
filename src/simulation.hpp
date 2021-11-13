@@ -41,6 +41,7 @@ class Environment :public Simulation {
 	#define Mu 3986005e8 //Earth's gravitational constant
 
 
+
 public:
 
 	Matrixop omega_e();
@@ -65,6 +66,7 @@ protected:
 
 public:
 
+	void storedata();
 
 	virtual void moments() = 0;
 	virtual void forces() = 0;
@@ -73,8 +75,9 @@ public:
 	//FRAMES AND COORDINATE SYSTEMS
 	Matrixop eci2ecef(double mu);
 	Matrixop ecef2b(double yaw, double pitch, double roll);
-	Matrixop ecef2NED(double lat,double lon);
-
+	Matrixop ned2ecef(double lat,double lon);
+	Matrixop v2b(double alpha, double beta);
+	Matrixop ned2b(double lat, double lon);
 };
 
 class Satellite : public Vehicle {
