@@ -63,8 +63,10 @@ void Aircraft::forces() {
 Matrixop Aircraft::dvdt(double mass, Matrixop F, Matrixop v) {
 
 	//Do switch cases for round and flat earth equations
-	//(1/m)Tvb*F + Tgb*G - (w_b/e + 2*w_e/i)*V_b/e - w_e/i*w_e/i*r_b/i
-	return (v2b(alpha, beta) * F) * (1 / mass) + ned2b(latitude, longitude) * gravity(position) - cross(omega_b + omega_e() * 2, v) - cross(omega_e(), cross(omega_e(), position));
+	//
+	return F * (1 / mass) + gravity(position) - cross(omega_b + omega_e() * 2, v) - cross(omega_e(), cross(omega_e(), position));
+
+
 
 }
 void Aircraft::vbody(Matrixop vo, Matrixop po, Matrixop Fo) {
@@ -84,10 +86,5 @@ void Aircraft::vbody(Matrixop vo, Matrixop po, Matrixop Fo) {
 	}
 }
 
-//FRAMES AND COORDINATE SYSTEMS
-// ECI (Earth-centered inertial) Nonrotating inertial frame fixed at Earth c.m.
-// ECEF(Earth-centered, Earth fixed) Rotating frame defined by rigid Earth at c.m.
-// Fv Frame translating with vehicle's c.m.
-// Fb Body frame defined by rigid vehicle
-//
+
 

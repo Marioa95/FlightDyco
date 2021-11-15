@@ -17,9 +17,9 @@ Matrixop Environment::gravity(Matrixop position) {
 	double a = 6378137;
 	double e = 0.08181919;
 	
-	//Round earth equation
+	//Round earth gravity equation
 
-	//Flat earth equation
+	//Flat earth gravity equation
 	g = Mu/pow(Rearth + position.get_ele(3),2);
 
 }

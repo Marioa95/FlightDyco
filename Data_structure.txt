@@ -1,0 +1,10 @@
+
+DATA 0 -> time in seconds
+DATA 1-3 -> position wrt earth frame in meters
+DATA 4-6 -> velocity wrt earth frame in m/s
+DATA 7-9 -> euler angles wrt earth frame in rad
+DATA 10-12 -> angular velocity in body frame in rad/s
+DATA 13-14 -> latitude, longitude in deg
+DATA 15-16 -> flight path angle, heading angle in deg
+DATA 17-3 ->
+DATA 1-3 ->

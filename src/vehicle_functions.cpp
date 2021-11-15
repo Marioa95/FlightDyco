@@ -24,40 +24,77 @@ void Vehicle::def_massproperties(Matrixop Inertia, Matrixop dInertia) {
 }
 
 //FRAMES AND COORDINATE SYSTEMS
-// ECI (Earth-centered inertial) Nonrotating inertial frame fixed at Earth c.m.
-// ECEF(Earth-centered, Earth fixed) Rotating frame defined by rigid Earth at c.m.
-// Fv Frame translating with vehicle's c.m.
-// Fb Body frame defined by rigid vehicle
+// I - ECI (Earth-centered inertial) Nonrotating inertial frame fixed at Earth c.m.
+// E - ECEF(Earth-centered, Earth fixed) Rotating frame defined by rigid Earth at c.m.
+// V - Frame translating with vehicle's c.m.
+// B - Body frame defined by rigid vehicle
+// G - Geographic frame
+// W - Wind reference frame
 //
 
-Matrixop Vehicle::eci2ecef(double mu) {
+Matrixop Vehicle::I2E(double mu) {
 
 	return euler3(mu);
 }
 
-Matrixop ecef2b(double yaw, double pitch, double roll) {
+Matrixop G2B(double yaw, double pitch, double roll) {
 	
 	return euler321(yaw, pitch, roll);
 
 }
 
-Matrixop Vehicle::ned2ecef(double lat, double lon) {
+Matrixop Vehicle::E2G(double lat, double lon) {
 
-	Matrixop middle(3, 3);
-
-	middle.assign_val(1, 3, 1);
-	middle.assign_val(2, 2, 1);
-	middle.assign_val(3, 1, -1);
-
-	return euler3(lon) * middle * (euler3(lat).trans());
+	return euler2(180) * euler2(90 - lat) * euler3(lon);
 }
 
-Matrixop Vehicle::v2b(double alpha, double beta) {
+Matrixop Vehicle::B2W(double alpha, double beta) {
 
+	return euler2(alpha) * euler3(beta);
+}
+
+Matrixop Vehicle::G2V(double fpa, double heading) {
+
+	return euler2(fpa) * euler3(heading);
+}
+
+double Vehicle::get_alpha(Matrixop v_B) {
+
+	double alpha;
+
+	alpha = atan(v_B.get_ele(3) / v_B.get_ele(1));
+
+	return alpha;
+}
+
+double Vehicle::get_beta(Matrixop v_B) {
+
+	double beta;
+
+	beta = asin(v_B.get_ele(2) / v_B.norm());
+
+	return beta;
 
 }
 
-Matrixop Vehicle::ned2b(double lat, double lon) {
+double Vehicle::get_fpa(Matrixop v_G) {
 
+	double fpa,n;
+
+	n = sqrt(pow(v_G.get_ele(1), 2) + pow(v_G.get_ele(2), 2));
+
+	fpa = atan(-v_G.get_ele(3) / n);
+
+	return fpa;
+
+}
+
+double Vehicle::get_heading(Matrixop v_G) {
+
+	double heading;
+
+	heading = atan(v_G.get_ele(2) / v_G.get_ele(1));
+
+	return heading;
 
 }

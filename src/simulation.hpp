@@ -73,11 +73,16 @@ public:
 	void def_massproperties(Matrixop Inertia,Matrixop DInertia);
 
 	//FRAMES AND COORDINATE SYSTEMS
-	Matrixop eci2ecef(double mu);
-	Matrixop ecef2b(double yaw, double pitch, double roll);
-	Matrixop ned2ecef(double lat,double lon);
-	Matrixop v2b(double alpha, double beta);
-	Matrixop ned2b(double lat, double lon);
+	Matrixop I2E(double mu);
+	Matrixop G2B(double yaw, double pitch, double roll);
+	Matrixop E2G(double lat,double lon);
+	Matrixop B2W(double alpha, double beta);
+	Matrixop G2V(double fpa, double heading);
+	double get_alpha(Matrixop v_B);
+	double get_beta(Matrixop v_B);
+	double get_fpa(Matrixop v_G);
+	double get_heading(Matrixop v_G);
+
 };
 
 class Satellite : public Vehicle {
