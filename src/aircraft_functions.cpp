@@ -63,9 +63,13 @@ void Aircraft::forces() {
 Matrixop Aircraft::dvdt(double mass, Matrixop F, Matrixop v) {
 
 	//Do switch cases for round and flat earth equations
-	//
-	return F * (1 / mass) + gravity(position) - cross(omega_b + omega_e() * 2, v) - cross(omega_e(), cross(omega_e(), position));
+	if (get_earthmodel() == 'R' || get_earthmodel() == 'r')
+		//Need to put reference frames
+		return F * (1 / mass) + gravity(position) - cross(omega_b + omega_e() * 2, v) - cross(omega_e(), cross(omega_e(), position));
 
+	else if (get_earthmodel() == 'F' || get_earthmodel() == 'f')
+
+		return F * (1 / mass) + gravity(position);
 
 
 }

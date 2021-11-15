@@ -7,7 +7,7 @@ class Simulation {
 	double sim_time;
 	double step_size;
 	int nvehicles;
-	string earth_model;
+	char earth_model;
 
 	//Define flat earth or round earth with a member e.g.
 	// String Earth
@@ -28,7 +28,7 @@ public:
 
 	double get_simtime() { return sim_time; }
 	double get_stepsize() { return step_size; }
-	string get_earthmodel() { return earth_model; }
+	char get_earthmodel() { return earth_model; }
 	void set_simtime(double t) { sim_time = t; }
 	void set_step_size(double h) { step_size = h; }
 
