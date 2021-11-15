@@ -37,8 +37,13 @@ Matrixop Vehicle::I2E(double mu) {
 	return euler3(mu);
 }
 
-Matrixop G2B(double yaw, double pitch, double roll) {
-	
+Matrixop G2B(Matrixop euler) {
+	double yaw, pitch, roll;
+
+	yaw = euler.get_ele(3);
+	pitch = euler.get_ele(2);
+	roll = euler.get_ele(1);
+
 	return euler321(yaw, pitch, roll);
 
 }
@@ -56,6 +61,11 @@ Matrixop Vehicle::B2W(double alpha, double beta) {
 Matrixop Vehicle::G2V(double fpa, double heading) {
 
 	return euler2(fpa) * euler3(heading);
+}
+
+Matrixop Vehicle::G2D(double latd) {
+
+	return euler2(latd).trans();
 }
 
 double Vehicle::get_alpha(Matrixop v_B) {

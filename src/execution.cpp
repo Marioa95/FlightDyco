@@ -6,19 +6,34 @@ using namespace std;
 
 int main()
 {
+	//Set Simulation parameters
+	// 	   step size
+	// 	   simulation time
+	// 	   initiliaze time
+	// 	   create vehicles
+	//
 
-	Matrixop I(3, 3), dI(3, 3), wo(3, 1), x(7, 1), Mo(3, 1), qo(4, 1), euler(3, 1);
+	double step_size, sim_time, time;
+	int N;
+
+	step_size = 0.01;
+	sim_time = 20;
+	time = 0;
+	N = sim_time/step_size;
+
 	Satellite s1;
 	Aircraft a1;
 
-	double h,tf;
-	h = 0.001;
-	tf = 20;
+	cout << N << endl;
+	//Set Envrionment parameters
+	// 	   earth shape
+	//
 
-	a1.set_simtime(tf);
-	a1.set_step_size(h);
+	a1.set_earthmodel('r');
 
-	Mo.assign_val(2,1,0);
+	//Link external files to set vehicle parameters
+
+	Matrixop I(3, 3), dI(3, 3);
 
 	I = eye(3);
 	I.assign_val(1, 1, 5);
@@ -27,7 +42,14 @@ int main()
 	
 	a1.def_massproperties(I,dI);
 
-	//wo.random();
+	//Initialize variables for dynamics equations
+	// 
+
+	Matrixop wo(3, 1), Mo(3, 1), qo(4, 1), euler(3, 1);
+	double latitude, longitude, altitude;
+
+	Mo.assign_val(2,1,0);
+
 	wo.assign_val(1, 1, 0);
 	wo.assign_val(2, 1, 5);
 	wo.assign_val(3, 1, 0);
@@ -36,11 +58,23 @@ int main()
 	euler.assign_val(2, 1, 0);
 	euler.assign_val(3, 1, 0);
 
-	qo = euler3212q(euler);
+	a1.init_attitude(euler);
+	a1.init_omegab(wo);
 
 	cout << wo.norm() << endl;
 
-	a1.omega_calc(wo, qo, Mo);//,h,tf);
+	//Start loop of equations of motion
+	for (int i = 0; i < N; i++) {
+
+		a1.omega_calc(Mo,step_size);
+
+		time = time + step_size;
+
+	}
 	
-	
+	cout << time << endl;
+	a1.printwb();
+
+	//Record data for post-processing
+
 }

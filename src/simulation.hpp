@@ -4,7 +4,7 @@
 
 class Simulation {
 
-	double sim_time;
+	double sim_time,t;
 	double step_size;
 	int nvehicles;
 	char earth_model;
@@ -29,6 +29,7 @@ public:
 	double get_simtime() { return sim_time; }
 	double get_stepsize() { return step_size; }
 	char get_earthmodel() { return earth_model; }
+	void set_earthmodel(char e) { earth_model = e; }
 	void set_simtime(double t) { sim_time = t; }
 	void set_step_size(double h) { step_size = h; }
 
@@ -37,16 +38,23 @@ public:
 class Environment :public Simulation {
 	//Earth parameters defined by WGS-84
 	#define omega_earth 7292115e-11 // rad/s
-	#define Rearth //Mean radius of the Earth
+	#define Rearth 6371e3 //Mean radius of the Earth
 	#define Mu 3986005e8 //Earth's gravitational constant
 
 
 
 public:
 
+	//EARTH GEOMETRY
+
 	Matrixop omega_e();
+	double delta(double altitude, double latd);
+	double Ro(double latd);
+
 	//GRAVITY
+	
 	Matrixop gravity(Matrixop position);
+	Matrixop gravity(Matrixop position, double latd);
 
 	//ATMOSPHERE
 
@@ -58,7 +66,7 @@ class Vehicle :public Environment {
 protected:
 	
 	double* data;
-	Matrixop omega_b, position, attitude_eul,attitude_q;
+	Matrixop omega_b, position, attitude_eul,attitude_q,velocity;
 	Matrixop I;
 	double mass;
 	Matrixop dI,dm;
@@ -72,12 +80,23 @@ public:
 	virtual void forces() = 0;
 	void def_massproperties(Matrixop Inertia,Matrixop DInertia);
 
+
+	//INITIALIZE VARIABLES
+
+	void init_position(Matrixop Sbe) { position = Sbe; }
+	void init_omegab(Matrixop wb) { omega_b = wb; }
+	void init_attitude(Matrixop theta) { attitude_eul = theta; }
+	void init_velocity(Matrixop vb) { velocity = vb; }
+	void printwb() { cout << omega_b.norm(); }
+
 	//FRAMES AND COORDINATE SYSTEMS
+
 	Matrixop I2E(double mu);
-	Matrixop G2B(double yaw, double pitch, double roll);
+	Matrixop G2B(Matrixop euler);
 	Matrixop E2G(double lat,double lon);
 	Matrixop B2W(double alpha, double beta);
 	Matrixop G2V(double fpa, double heading);
+	Matrixop G2D(double latd);
 	double get_alpha(Matrixop v_B);
 	double get_beta(Matrixop v_B);
 	double get_fpa(Matrixop v_G);
@@ -110,17 +129,15 @@ public:
 
 	//DATA STORAGE
 
-
 	//ROTATIONAL EQUATIONS OF MOTION
 	
 	void moments();
 	Matrixop dwdt(Matrixop I, Matrixop M, Matrixop w, Matrixop dI);
-	void omega_calc(Matrixop wo, Matrixop qo, Matrixop Mo);
-
+	void omega_calc(Matrixop Mo, double h);
 
 	//TRANSLATIONAL EQUATIONS OF MOTION
 	
 	void forces();
 	Matrixop dvdt(double mass,Matrixop F, Matrixop v);
-	void vbody(Matrixop vo,Matrixop po,Matrixop Fo);
+	void vbody(Matrixop Fo, double h);
 };
